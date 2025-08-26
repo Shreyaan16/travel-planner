@@ -27,7 +27,7 @@ A comprehensive travel booking web application built with FastAPI backend and va
 ## Project Structure
 
 ```
-travel lykke/
+root/
 ├── app.py                 # Main FastAPI application
 ├── models.py             # Database models
 ├── schemas.py            # Pydantic schemas
@@ -68,15 +68,11 @@ POSTGRES_DSN=postgresql://username:password@localhost/database_name
 
 #### Option 1: Using the startup script
 ```bash
-cd "c:\Users\Shreyaan\Desktop\coding\python\aiml\internship_assignment\travel lykke"
-conda activate fastapi_env
 python run_server.py
 ```
 
 #### Option 2: Using uvicorn directly
 ```bash
-cd "c:\Users\Shreyaan\Desktop\coding\python\aiml\internship_assignment\travel lykke"
-conda activate fastapi_env
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
