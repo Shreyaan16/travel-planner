@@ -49,9 +49,6 @@ root/
 
 ### 1. Environment Setup
 ```bash
-# Activate your fastapi environment
-conda activate fastapi_env
-
 # Install required packages (if not already installed)
 pip install fastapi uvicorn sqlalchemy psycopg2-binary python-dotenv python-jose[cryptography] passlib[bcrypt] python-multipart
 ```
