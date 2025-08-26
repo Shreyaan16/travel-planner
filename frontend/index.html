@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelLykke - Your Travel Booking Platform</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">TravelLykke</div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showSection('home-section'); loadTravelOptions();" class="auth-required">Home</a></li>
+                    <li><a href="#" onclick="showSection('bookings-section'); loadUserBookings();" class="auth-required">My Bookings</a></li>
+                    <li><a href="#" onclick="showSection('profile-section'); loadProfile();" class="auth-required">Profile</a></li>
+                    <li><a href="#" onclick="showSection('login-section')" class="guest-only">Login</a></li>
+                    <li><a href="#" onclick="showSection('register-section')" class="guest-only">Register</a></li>
+                </ul>
+                <div class="user-info auth-required">
+                    <span>Welcome, <span id="userName">User</span></span>
+                    <button class="btn btn-small btn-secondary" onclick="handleLogout()">Logout</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Loading Spinner -->
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
+
+            <!-- Login Section -->
+            <section id="login-section" class="section auth-container">
+                <form id="loginForm" class="auth-form">
+                    <h2>Login to TravelLykke</h2>
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        Don't have an account? <a href="#" onclick="showSection('register-section')">Register here</a>
+                    </p>
+                </form>
+            </section>
+
+            <!-- Register Section -->
+            <section id="register-section" class="section auth-container hidden">
+                <form id="registerForm" class="auth-form">
+                    <h2>Register for TravelLykke</h2>
+                    <div class="form-group">
+                        <label for="registerUsername">Username *</label>
+                        <input type="text" id="registerUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email *</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerFullName">Full Name</label>
+                        <input type="text" id="registerFullName" name="full_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPhone">Phone Number</label>
+                        <input type="tel" id="registerPhone" name="phone_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password *</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" required>
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        Already have an account? <a href="#" onclick="showSection('login-section')">Login here</a>
+                    </p>
+                </form>
+            </section>
+
+            <!-- Home Section -->
+            <section id="home-section" class="section hidden">
+                <!-- Search Form -->
+                <div class="search-section">
+                    <h2>Find Your Perfect Trip</h2>
+                    <form id="searchForm" class="search-form">
+                        <div class="form-group">
+                            <label for="searchType">Travel Type</label>
+                            <select id="searchType" name="type">
+                                <option value="">All Types</option>
+                                <option value="Flight">Flight</option>
+                                <option value="Train">Train</option>
+                                <option value="Bus">Bus</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchSource">From</label>
+                            <input type="text" id="searchSource" name="source" placeholder="Enter source city">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchDestination">To</label>
+                            <input type="text" id="searchDestination" name="destination" placeholder="Enter destination city">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchDate">Travel Date</label>
+                            <input type="date" id="searchDate" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchMinPrice">Min Price (₹)</label>
+                            <input type="number" id="searchMinPrice" name="min_price" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchMaxPrice">Max Price (₹)</label>
+                            <input type="number" id="searchMaxPrice" name="max_price" min="0">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn">Search</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Travel Options -->
+                <div class="travel-options" id="travelOptionsContainer">
+                    <!-- Travel options will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Bookings Section -->
+            <section id="bookings-section" class="section hidden">
+                <h2>My Bookings</h2>
+                <div class="bookings-grid" id="bookingsContainer">
+                    <!-- User bookings will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="section hidden">
+                <div class="auth-container">
+                    <form id="profileForm" class="auth-form">
+                        <h2>Update Profile</h2>
+                        <div class="form-group">
+                            <label for="profileFullName">Full Name</label>
+                            <input type="text" id="profileFullName" name="full_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileEmail">Email</label>
+                            <input type="email" id="profileEmail" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="profilePhone">Phone Number</label>
+                            <input type="tel" id="profilePhone" name="phone_number">
+                        </div>
+                        <button type="submit" class="btn">Update Profile</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="booking-modal">
+        <form id="bookingForm" class="booking-form">
+            <h2>Book Your Trip</h2>
+            <input type="hidden" id="bookingOptionId" name="option_id">
+            
+            <div class="booking-details">
+                <h3 id="bookingTitle">Travel Option</h3>
+                <p id="bookingRoute">Route</p>
+                <div class="travel-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Price per seat</div>
+                        <div class="detail-value" id="bookingPrice">₹0</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Available Seats</div>
+                        <div class="detail-value" id="bookingAvailableSeats">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="numSeats">Number of Seats</label>
+                <input type="number" id="numSeats" name="num_seats" min="1" value="1" required>
+            </div>
+
+            <div class="form-group">
+                <label>Total Price</label>
+                <div style="font-size: 1.2rem; font-weight: bold; color: #28a745;" id="totalPrice">₹0</div>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                <button type="submit" class="btn">Confirm Booking</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Additional profile functions
+        async function loadProfile() {
+            try {
+                const user = await api.getCurrentUser();
+                document.getElementById('profileFullName').value = user.full_name || '';
+                document.getElementById('profileEmail').value = user.email || '';
+                document.getElementById('profilePhone').value = user.phone_number || '';
+            } catch (error) {
+                showAlert('Failed to load profile', 'error');
+            }
+        }
+
+        async function handleProfileUpdate(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const userData = {
+                full_name: formData.get('full_name'),
+                email: formData.get('email'),
+                phone_number: formData.get('phone_number')
+            };
+
+            try {
+                showLoading(true);
+                await api.updateProfile(userData);
+                showAlert('Profile updated successfully!', 'success');
+                loadUserInfo(); // Refresh user info in header
+            } catch (error) {
+                showAlert(error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Add profile form event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('profileForm')?.addEventListener('submit', handleProfileUpdate);
+        });
+
+        // Set minimum date for search to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('searchDate').min = today;
+        });
+    </script>
+</body>
+</html>
